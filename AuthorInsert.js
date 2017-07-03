@@ -7,9 +7,6 @@ r.connect({
 
     if (err) throw err;
     connection = conn;
-
-    
-
     r.table('authors').insert([{
             name: "William Adama",
             tv_show: "test",
