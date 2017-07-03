@@ -1,10 +1,13 @@
 var express = require('express')
 var cors = require('cors')
 var app = express()
+var sockio = require("socket.io");
 r = require('rethinkdb');
 var connection = null;
 app.use(cors())
-
+var io = sockio.listen(app.listen(8090), {log: false});
+console.log("App listening on port 8090");
+ 
 app.get('/', function (req, res, next) { //products/:id
     r.connect({
         host: 'localhost',
@@ -16,11 +19,13 @@ app.get('/', function (req, res, next) { //products/:id
             if (err) throw err;
 
             cursor.eachAsync(function (err, row) {
-                if (err) throw err;
-
-                console.log(JSON.stringify(row, null, 2));
-                //  res.json(row)
-            }).then(function () {
+                var ok = processRowData(row);
+                if (!ok) {
+                    throw new Error('Bad row: ' + row);
+                }
+                 
+            }).then(function (data) {
+                 res.json(data)
                 console.log('done processing');
             }).catch(function (error) {
                 console.log('Error:', error.message);
@@ -33,7 +38,6 @@ app.get('/', function (req, res, next) { //products/:id
 })
 
 app.get('/insert/:name', function (req, res, next) { //products/:id
-    console.log(req.params.name)
     r.connect({
         host: 'localhost',
         port: 28015
@@ -59,13 +63,18 @@ app.get('/insert/:name', function (req, res, next) { //products/:id
             ]
         }]).run(connection, function (err, result) {
             if (err) throw err;
-            console.log(JSON.stringify(result, null, 2));
+          //  console.log(JSON.stringify(result, null, 2));
             res.json(result)
         })
 
     })
 })
 
+function processRowData(row){
+var a=[];
+a.push(row)
+return a;
+}
 app.listen(8888, function () {
     console.log('CORS-enabled web server listening on port 80')
 })
