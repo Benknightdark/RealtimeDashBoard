@@ -87,11 +87,14 @@ r.connect({
     //     if (err) throw err;
     //     console.log(JSON.stringify(result, null, 2));
     // });
-    r.table('authors').changes().run(connection, function(err, cursor) {
-    if (err) throw err;
-    cursor.each(function(err, row) {
+    r.table('authors').changes().run(connection, function (err, cursor) {
         if (err) throw err;
-        console.log(JSON.stringify(row, null, 2));
+        cursor.each(function (err, row) {
+            if (err) throw err;
+            console.log(JSON.stringify(row, null, 2));
+            exports.AuthoursList = cursor
+        });
+        console.log('cursor', cursor)
+        
     });
-});
 })

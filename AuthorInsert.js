@@ -29,33 +29,39 @@ r.connect({
     })
 
 
-r.table('authors').update({type: "fictional"}).
-    run(connection, function(err, result) {
+    r.table('authors').update({
+        type: "fictional"
+    }).
+    run(connection, function (err, result) {
         if (err) throw err;
         console.log(JSON.stringify(result, null, 2));
     });
 
-r.table('authors').
+    r.table('authors').
     filter(r.row("name").eq("test")).
-    update({rank: "Admiral"}).
-    run(connection, function(err, result) {
+    update({
+        rank: "Admiral"
+    }).
+    run(connection, function (err, result) {
         if (err) throw err;
         console.log(JSON.stringify(result, null, 2));
     });
 
 
-r.table('authors').filter(r.row("name").eq("test")).
-    update({posts: r.row("posts").append({
-        title: "Shakespeare",
-        content: "What a piece of work is man..."})
-    }).run(connection, function(err, result) {
+    r.table('authors').filter(r.row("name").eq("test")).
+    update({
+        posts: r.row("posts").append({
+            title: "Shakespeare",
+            content: "What a piece of work is man..."
+        })
+    }).run(connection, function (err, result) {
         if (err) throw err;
         console.log(JSON.stringify(result, null, 2));
     });
-r.table('authors').
+    r.table('authors').
     filter(r.row('posts').count().lt(3)).
     delete().
-    run(connection, function(err, result) {
+    run(connection, function (err, result) {
         if (err) throw err;
         console.log(JSON.stringify(result, null, 2));
     });
