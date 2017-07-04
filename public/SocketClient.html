@@ -1,0 +1,9 @@
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" integrity="sha256-sdmLD9jD1PIzq3KOQPNSGZYxjv76rds79Mnyk5JNp1M=" crossorigin="anonymous"></script>
+<script>
+var socket = io.connect( "http://localhost:4000");
+socket.on("data", function(data) {
+ // scores.users = data;
+  console.log(data)
+});
+ </script>
